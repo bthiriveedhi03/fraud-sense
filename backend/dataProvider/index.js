@@ -1,4 +1,6 @@
-const geminiProvider = require('./geminiProvider');
+const path = require('path');
+
+const geminiProvider = require(path.join(__dirname, 'geminiProvider.js'));
 
 const SOURCE = process.env.DATA_SOURCE || 'gemini';
 
