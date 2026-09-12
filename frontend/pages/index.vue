@@ -19,17 +19,14 @@ function closeDetail() {
   feed.selectTransaction(null)
 }
 
-onMounted(connect)
+const loading = ref(true)
+onMounted(() => setTimeout(() => (loading.value = false), 1500))
 onUnmounted(disconnect)
 </script>
 
 <template>
-  <div class="flex h-screen flex-col bg-ink-950">
-    <header class="flex items-center justify-between border-b border-ink-700 px-6 py-3">
-      <h1 class="text-sm font-medium tracking-wide text-fog-100">Fraud Sense</h1>
-      <p class="text-xs text-fog-500">Real-time transaction monitoring</p>
-    </header>
-
+  <PokerChipLoader v-if="loading" />
+  <div v-else class="flex h-screen flex-col bg-ink-950">
     <StatsBar />
     <CredStuffingMonitor />
 
