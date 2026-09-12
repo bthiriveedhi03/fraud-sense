@@ -1,5 +1,4 @@
 .env
 node_modules
 .nuxt
-dist
-.DS_store
+.DS_Store

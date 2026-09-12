@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Pool } = require('pg');
-const provider = require('../backend/dataProvider');
+const provider = require('../dataProvider');
 
 const NUM_CUSTOMERS = 15;
 const PURCHASES_PER_ACCOUNT = 40;
