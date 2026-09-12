@@ -7,7 +7,31 @@ const { Pool } = require('pg');
 const { startSimulator } = require('./simulator');
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  'https://callthebluff.com',
+  'https://www.callthebluff.com',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:3001',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 const pool = new Pool({
