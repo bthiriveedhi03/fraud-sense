@@ -80,10 +80,26 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  startSimulator(io, pool);
-});
+const PORT = Number(process.env.PORT) || 3001;
+
+const startServer = (port) => {
+  server.once('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const nextPort = port + 1;
+      console.warn(`Port ${port} is busy. Retrying on ${nextPort}...`);
+      startServer(nextPort);
+      return;
+    }
+
+    throw err;
+  });
+
+  server.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+    startSimulator(io, pool);
+  });
+};
+
+startServer(PORT);
 
 module.exports = { app, io, pool };
