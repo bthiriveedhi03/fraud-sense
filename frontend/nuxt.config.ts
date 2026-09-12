@@ -5,8 +5,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'https://callthebluff.com',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://callthebluff.com',
+      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'https://callthebluff.us',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://www.callthebluff.us',
     },
   },
   app: {
