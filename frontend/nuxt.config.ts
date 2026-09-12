@@ -5,9 +5,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      // Point this at your backend once it's deployed (e.g. wss://api.fraudsense.tech)
-      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'http://localhost:4000',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:4000',
+      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'https://callthebluff.com',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://callthebluff.com',
     },
   },
   app: {

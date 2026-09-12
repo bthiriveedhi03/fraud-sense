@@ -7,6 +7,11 @@ const feed = useFeedStore()
 
 const popover = reactive({ visible: false, x: 0, y: 0 })
 
+onMounted(() => {
+  connect()
+  setTimeout(() => (loading.value = false), 1500)
+})
+
 function openDetail(id: string, event: MouseEvent) {
   feed.selectTransaction(id)
   popover.x = event.clientX
@@ -20,7 +25,6 @@ function closeDetail() {
 }
 
 const loading = ref(true)
-onMounted(() => setTimeout(() => (loading.value = false), 1500))
 onUnmounted(disconnect)
 </script>
 
