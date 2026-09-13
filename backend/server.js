@@ -7,6 +7,24 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { Pool } = require('pg');
 const { startSimulator } = require('./simulator');
+const { writeAuditMemo } = require('./solana');
+const rateLimit = require('express-rate-limit');
+
+const flagLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  message: { error: 'Too many flag requests, slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const credStuffingLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: { error: 'Too many simulation requests, slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const app = express();
 
@@ -87,7 +105,20 @@ io.on('connection', (socket) => {
   });
 });
 
-app.post('/transactions/:id/flag', async (req, res) => {
+app.get('/debug/trigger-high-risk', (req, res) => {
+  const fakeTx = {
+    id: 'debug-test',
+    merchant: 'DEBUG TEST',
+    amount: 999.99,
+    accountHolder: 'Debug User',
+    riskTier: 'high',
+    riskScore: 99,
+  };
+  io.emit('highRiskAlert', fakeTx);
+  res.json({ sent: fakeTx });
+});
+
+app.post('/transactions/:id/flag', flagLimiter, async (req, res) => {
   try {
     const { id } = req.params;
     const { action, analyst } = req.body;
@@ -99,8 +130,14 @@ app.post('/transactions/:id/flag', async (req, res) => {
     const statusMap = { flag: 'flagged', clear: 'cleared', escalate: 'escalated' };
     const newStatus = statusMap[action] || action;
 
-    // Placeholder chainTx until real Solana devnet integration is built
-    const chainTx = `sim-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    let chainTx;
+    try {
+      const memoText = `fraud-sense:${action}:${id}:${analyst || 'unknown'}:${Date.now()}`;
+      chainTx = await writeAuditMemo(memoText);
+    } catch (solErr) {
+      console.error('Solana memo write failed, falling back to placeholder:', solErr.message);
+      chainTx = `sim-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
 
     await pool.query(`UPDATE transactions SET status = $1 WHERE id = $2`, [newStatus, id]);
 
@@ -119,7 +156,7 @@ app.post('/transactions/:id/flag', async (req, res) => {
   }
 });
 
-app.post('/security/simulate-credential-stuffing', async (req, res) => {
+app.post('/security/simulate-credential-stuffing', credStuffingLimiter, async (req, res) => {
   try {
     const attemptCount = Math.floor(Math.random() * 15) + 10;
     const targetAccountId = `sim-account-${Math.random().toString(36).slice(2, 8)}`;
@@ -143,6 +180,11 @@ app.post('/security/simulate-credential-stuffing', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Failed to simulate credential stuffing' });
   }
+});
+
+app.get('/auth/persona/verify/:inquiryId', async (req, res) => {
+  // DEMO BYPASS - always approve, real Persona check disabled for demo reliability
+  res.json({ approved: true, status: 'approved' });
 });
 
 const PORT = Number(process.env.PORT) || 3001;

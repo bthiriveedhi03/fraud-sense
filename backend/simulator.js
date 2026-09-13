@@ -146,6 +146,9 @@ function startSimulator(io, pool, intervalMs = 3000) {
       const transaction = await generateOneTransaction(pool);
       if (transaction) {
         io.emit('newTransaction', transaction);
+        if (transaction.riskTier === 'high') {
+          io.emit('highRiskAlert', transaction);
+        }
         const flag = transaction.riskTier !== 'low' ? ` [${transaction.riskTier.toUpperCase()}]` : '';
         console.log(`  → ${transaction.merchant} — $${transaction.amount}${flag}`);
       }
