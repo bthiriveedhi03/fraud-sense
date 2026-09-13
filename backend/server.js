@@ -9,8 +9,8 @@ const { startSimulator } = require('./simulator');
 const app = express();
 
 const allowedOrigins = [
-  'https://callthebluff.com',
-  'https://www.callthebluff.com',
+  'https://callthebluff.us',
+  'https://www.callthebluff.us',
   'http://localhost:3000',
   'http://localhost:3001',
   'http://127.0.0.1:3000',

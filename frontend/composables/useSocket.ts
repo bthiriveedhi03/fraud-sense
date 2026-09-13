@@ -35,7 +35,7 @@ export function useSocket() {
       feed.setConnectionStatus('live')
     })
 
-    socket.on('transaction', (tx: Transaction) => {
+    socket.on('newTransaction', (tx: Transaction) => {
       feed.ingest(tx)
     })
 
