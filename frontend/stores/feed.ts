@@ -110,10 +110,23 @@ export const useFeedStore = defineStore('feed', {
       }
       this.auditLog.unshift(entry)
 
-      // Backend should also write this to Solana devnet and return the signature.
-      // Wire this up once /transactions/:id/flag exists:
-      // const { chainTx } = await $fetch(`/transactions/${transactionId}/flag`, { method: 'POST', body: { action } })
-      // entry.chainTx = chainTx
+      const actionMap: Record<AuditEntry['action'], string> = {
+        flagged: 'flag',
+        cleared: 'clear',
+        escalated: 'escalate',
+      }
+
+      try {
+        const config = useRuntimeConfig()
+        const { chainTx } = await $fetch<{ chainTx: string }>(
+          `${config.public.apiBase}/transactions/${transactionId}/flag`,
+          { method: 'POST', body: { action: actionMap[action], analyst } }
+        )
+        const target = this.auditLog.find((e) => e.id === entry.id)
+        if (target) target.chainTx = chainTx
+      } catch (err) {
+        console.error('Failed to persist action to backend:', err)
+      }
     },
 
     recordCredStuffingAttempt(blocked: boolean) {

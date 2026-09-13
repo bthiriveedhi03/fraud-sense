@@ -12,17 +12,21 @@ async function runAttackDemo() {
   // block decision is real. Falls back to a local simulation otherwise -
   // this keeps the panel demoable before that endpoint is built.
   try {
-    await $fetch(`${config.public.apiBase}/security/simulate-credential-stuffing`, { method: 'POST' })
+    const result = await $fetch<{ attemptCount: number }>(
+      `${config.public.apiBase}/security/simulate-credential-stuffing`,
+      { method: 'POST' }
+    )
+    simulateLocally(result.attemptCount)
   } catch {
     simulateLocally()
   }
 }
 
-function simulateLocally() {
+function simulateLocally(totalAttempts = 8) {
   let attempts = 0
   interval = setInterval(() => {
     attempts += 1
-    const blocked = attempts >= 5 // pretend the rate limiter kicks in after 5 attempts
+    const blocked = attempts >= totalAttempts
     feed.recordCredStuffingAttempt(blocked)
     if (blocked && interval) {
       clearInterval(interval)
