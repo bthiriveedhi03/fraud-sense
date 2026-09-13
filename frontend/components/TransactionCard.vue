@@ -49,49 +49,49 @@ const stamp: Record<string, { text: string; color: string }> = {
 
 <template>
   <button
-    class="deal-card group relative flex h-44 w-72 shrink-0 flex-col justify-between rounded-2xl border-2 border-amber-400/70 p-4 text-left transition-transform hover:-translate-y-1"
+    class="deal-card group relative flex h-32 w-full flex-col justify-between rounded-xl border-2 border-amber-400/70 p-2.5 text-left transition-transform hover:-translate-y-1"
     :class="[fill[tx.riskTier], glow[tx.riskTier], selected ? 'ring-2 ring-signal ring-offset-2 ring-offset-ink-950' : '']"
     @click="$emit('select', tx.id, $event)"
   >
     <!-- gold foil corner flourishes, casino card-frame feel -->
-    <div class="pointer-events-none absolute left-2 top-2 h-3 w-3 rounded-tl border-l-2 border-t-2 border-amber-300/80" />
-    <div class="pointer-events-none absolute bottom-2 right-2 h-3 w-3 rounded-br border-b-2 border-r-2 border-amber-300/80" />
+    <div class="pointer-events-none absolute left-1.5 top-1.5 h-2 w-2 rounded-tl border-l-2 border-t-2 border-amber-300/80" />
+    <div class="pointer-events-none absolute bottom-1.5 right-1.5 h-2 w-2 rounded-br border-b-2 border-r-2 border-amber-300/80" />
 
     <!-- card sheen -->
     <div
-      class="pointer-events-none absolute inset-0 rounded-2xl opacity-50"
-      style="background: radial-gradient(120px 80px at 20% 10%, rgba(255,255,255,0.18), transparent 70%)"
+      class="pointer-events-none absolute inset-0 rounded-xl opacity-50"
+      style="background: radial-gradient(80px 50px at 20% 10%, rgba(255,255,255,0.18), transparent 70%)"
     />
 
     <!-- verdict stamp -->
     <div
       v-if="tx.status !== 'new'"
-      class="pointer-events-none absolute right-4 top-10 rotate-[-8deg] rounded border-2 bg-ink-950/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+      class="pointer-events-none absolute right-2 top-7 rotate-[-8deg] rounded border bg-ink-950/40 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wider"
       :class="stamp[tx.status].color"
     >
       {{ stamp[tx.status].text }}
     </div>
 
     <div class="relative flex items-start justify-between">
-      <span class="text-[10px] font-medium uppercase tracking-widest" :class="mutedOnFill[tx.riskTier]">
+      <span class="text-[8px] font-medium uppercase tracking-widest" :class="mutedOnFill[tx.riskTier]">
         &#9827; Fraud Sense
       </span>
-      <span class="rounded-full bg-black/15 px-2 py-0.5 font-mono text-[11px]" :class="textOnFill[tx.riskTier]">
+      <span class="rounded-full bg-black/15 px-1.5 py-0.5 font-mono text-[9px]" :class="textOnFill[tx.riskTier]">
         {{ tx.riskScore }}
       </span>
     </div>
 
     <div class="relative">
-      <div class="mb-2 h-5 w-8 rounded-[3px] border border-amber-300/60 bg-amber-300/25" />
-      <p class="font-mono text-sm tracking-widest" :class="textOnFill[tx.riskTier]">{{ maskedNumber }}</p>
+      <div class="mb-1 h-3.5 w-6 rounded-[2px] border border-amber-300/60 bg-amber-300/25" />
+      <p class="truncate font-mono text-xs tracking-widest" :class="textOnFill[tx.riskTier]">{{ maskedNumber }}</p>
     </div>
 
-    <div class="relative flex items-end justify-between">
+    <div class="relative flex items-end justify-between gap-1">
       <div class="min-w-0">
-        <p class="truncate text-xs" :class="mutedOnFill[tx.riskTier]">{{ tx.merchant }} &middot; {{ tx.accountHolder }}</p>
-        <p class="font-mono text-xl" :class="textOnFill[tx.riskTier]">${{ tx.amount.toLocaleString() }}</p>
+        <p class="truncate text-[9px]" :class="mutedOnFill[tx.riskTier]">{{ tx.merchant }} &middot; {{ tx.accountHolder }}</p>
+        <p class="font-mono text-base" :class="textOnFill[tx.riskTier]">${{ tx.amount.toLocaleString() }}</p>
       </div>
-      <span class="shrink-0 font-mono text-[11px]" :class="mutedOnFill[tx.riskTier]">{{ time }}</span>
+      <span class="shrink-0 font-mono text-[9px]" :class="mutedOnFill[tx.riskTier]">{{ time }}</span>
     </div>
   </button>
 </template>

@@ -14,6 +14,14 @@ const labels: Record<RiskTier, string> = {
   mid: 'Medium',
   high: 'High',
 }
+
+// Suit per tier - a small casino flourish that also reinforces severity
+// (spade/club read heavier than a diamond) without relying on color alone.
+const suits: Record<RiskTier, string> = {
+  low: '&#9830;', // diamond
+  mid: '&#9827;', // club
+  high: '&#9824;', // spade
+}
 </script>
 
 <template>
@@ -22,6 +30,7 @@ const labels: Record<RiskTier, string> = {
     :class="styles[props.tier]"
   >
     <span class="font-mono">{{ props.score }}</span>
+    <span v-html="suits[props.tier]" />
     <span>{{ labels[props.tier] }}</span>
   </span>
 </template>

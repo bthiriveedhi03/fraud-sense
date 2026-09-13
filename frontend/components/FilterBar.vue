@@ -3,25 +3,36 @@ import { useFeedStore } from '~/stores/feed'
 
 const feed = useFeedStore()
 
+// Chip colors match the risk-tier colors used everywhere else (map markers,
+// transaction cards) so the filter reads as "pick a chip color". textOn
+// picks a readable label color against that fill.
 const tiers = [
-  { value: 'all', label: 'All' },
-  { value: 'high', label: 'High' },
-  { value: 'mid', label: 'Medium' },
-  { value: 'low', label: 'Low' },
+  { value: 'all', label: 'All', chip: null, textOn: 'text-fog-100' },
+  { value: 'high', label: 'High', chip: '#E0524A', textOn: 'text-white' },
+  { value: 'mid', label: 'Medium', chip: '#E0A845', textOn: 'text-ink-950' },
+  { value: 'low', label: 'Low', chip: '#3FB68B', textOn: 'text-ink-950' },
 ] as const
 </script>
 
 <template>
   <div class="flex items-center gap-3 border-b border-ink-700 px-6 py-3">
-    <div class="flex gap-1">
+    <div class="flex gap-2">
       <button
         v-for="t in tiers"
         :key="t.value"
-        class="rounded px-2.5 py-1 text-xs font-medium transition-colors"
-        :class="
-          feed.filters.tier === t.value
-            ? 'bg-ink-700 text-fog-100'
-            : 'text-fog-500 hover:text-fog-300'
+        class="relative h-9 w-16 shrink-0 rounded-lg text-xs font-semibold uppercase tracking-wide transition-transform hover:-translate-y-0.5"
+        :class="[
+          t.chip ? t.textOn : 'bg-ink-800 text-fog-500 hover:text-fog-300',
+          feed.filters.tier === t.value ? 'ring-ink-2 ring-amber-300 ring-offset-2 ring-offset-ink-950' : '',
+        ]"
+        :style="
+          t.chip
+            ? {
+                background: t.chip,
+                border: '2px dashed rgba(255,255,255,0.65)',
+                boxShadow: 'inset 0 0 0 4px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.4)',
+              }
+            : undefined
         "
         @click="feed.setFilter('tier', t.value)"
       >
