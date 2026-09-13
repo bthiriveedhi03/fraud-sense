@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     public: {
       socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'https://callthebluff.us',
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://www.callthebluff.us',
+      cartoApiKey: process.env.NUXT_PUBLIC_CARTO_API_KEY,
     },
   },
   app: {

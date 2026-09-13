@@ -13,10 +13,14 @@ onMounted(async () => {
   L = await import('leaflet')
   await import('leaflet/dist/leaflet.css')
 
+  const config = useRuntimeConfig()
+  const cartoKey = config.public.cartoApiKey
+
   map = L.map(mapEl.value, { zoomControl: false, attributionControl: false }).setView([32, -97], 4)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 12,
-  }).addTo(map)
+  L.tileLayer(
+    `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png${cartoKey ? `?api_key=${cartoKey}` : ''}`,
+    { maxZoom: 12 }
+  ).addTo(map)
 
   markerLayer = L.layerGroup().addTo(map)
   render()
