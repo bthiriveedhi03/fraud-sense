@@ -150,7 +150,7 @@ function startSimulator(io, pool, intervalMs = 3000) {
         console.log(`  → ${transaction.merchant} — $${transaction.amount}${flag}`);
       }
     } catch (err) {
-      console.error('Simulator error:', err.message);
+      console.error('Simulator error:', err);
     }
   }, intervalMs);
 }

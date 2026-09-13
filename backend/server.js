@@ -1,4 +1,6 @@
+const path = require('path');
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
@@ -8,29 +10,10 @@ const { startSimulator } = require('./simulator');
 
 const app = express();
 
-const allowedOrigins = [
-  'https://callthebluff.us',
-  'https://www.callthebluff.us',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://127.0.0.1:3000',
-  'http://127.0.0.1:3001',
-];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-  })
-);
+  app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+  }));
 
 app.use(express.json());
 
@@ -94,7 +77,7 @@ app.get('/stats/summary', async (req, res) => {
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' },
+  cors: { origin: 'http://localhost:3000' },
 });
 
 io.on('connection', (socket) => {
@@ -120,10 +103,16 @@ const startServer = (port) => {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
-    startSimulator(io, pool);
+
+    if (process.env.DATABASE_URL) {
+      startSimulator(io, pool);
+    } else {
+      console.warn('DATABASE_URL is missing. Simulator disabled until the database is configured.');
+    }
   });
 };
 
 startServer(PORT);
 
 module.exports = { app, io, pool };
+
