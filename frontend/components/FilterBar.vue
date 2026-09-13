@@ -23,7 +23,7 @@ const tiers = [
         class="relative h-9 w-16 shrink-0 rounded-lg text-xs font-semibold uppercase tracking-wide transition-transform hover:-translate-y-0.5"
         :class="[
           t.chip ? t.textOn : 'bg-ink-800 text-fog-500 hover:text-fog-300',
-          feed.filters.tier === t.value ? 'ring-2 ring-amber-300 ring-offset-2 ring-offset-ink-950' : '',
+          feed.filters.tier === t.value ? 'ring-ink-2 ring-amber-300 ring-offset-2 ring-offset-ink-950' : '',
         ]"
         :style="
           t.chip

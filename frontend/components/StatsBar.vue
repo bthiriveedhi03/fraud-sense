@@ -31,25 +31,29 @@ const connectionDot = computed(() => {
 <template>
   <div class="flex items-center justify-between gap-6 border-b border-ink-700 px-6 py-4">
     <div class="flex flex-1 justify-center gap-4">
-      <div class="relative overflow-hidden rounded-xl border-2 border-amber-400/50 bg-ink-900 px-5 py-2.5 text-center shadow-[0_0_16px_-6px_rgba(251,191,36,0.4)]">
-        <span class="pointer-events-none absolute inset-0 flex items-center justify-center text-5xl leading-none text-amber-400/40">&#9827;</span>
-        <p class="relative text-xs uppercase tracking-wide text-fog-500">Transactions / min</p>
-        <p class="relative mt-1 font-mono text-2xl text-fog-100">{{ stats.perMinute }}</p>
+      <div class="rounded-xl border-2 border-dashed border-amber-400/60 bg-ink-900 px-5 py-2.5 text-center shadow-[0_0_16px_-6px_rgba(251,191,36,0.4)]">
+        <p class="text-xs uppercase tracking-wide text-white-500">Transactions / min</p>
+        <p class="mt-1 font-mono text-2xl text-amber-300">
+          {{ stats.perMinute }} <span class="text-xxxxl text-amber-400">&#9827;</span>
+        </p>
       </div>
-      <div class="relative overflow-hidden rounded-xl border border-ink-700 bg-ink-900 px-5 py-2.5 text-center">
-        <span class="pointer-events-none absolute inset-0 flex items-center justify-center text-5xl leading-none text-risk-high/40">&#9829;</span>
-        <p class="relative text-xs uppercase tracking-wide text-fog-500">High-risk flagged</p>
-        <p class="relative mt-1 font-mono text-2xl text-risk-high">{{ stats.flagged }}</p>
+      <div class="rounded-xl border-2 border-dashed border-red-600 bg-ink-900 px-5 py-2.5 text-center">
+        <p class="text-xs uppercase tracking-wide text-white-500">High-risk flagged</p>
+        <p class="mt-1 font-mono text-2xl text-risk-high">
+          {{ stats.flagged }} <span class="text-xxxxl text-risk-high">&#9829;</span>
+        </p>
       </div>
-      <div class="relative overflow-hidden rounded-xl border border-ink-700 bg-ink-900 px-5 py-2.5 text-center">
-        <span class="pointer-events-none absolute inset-0 flex items-center justify-center text-5xl leading-none text-fog-500/40">&#9830;</span>
-        <p class="relative text-xs uppercase tracking-wide text-fog-500">False-positive rate</p>
-        <p class="relative mt-1 font-mono text-2xl text-fog-100">{{ stats.falsePositiveRate }}%</p>
+      <div class="rounded-xl border-2 border-dashed border-cyan-600 bg-ink-900 px-5 py-2.5 text-center">
+        <p class="text-xs uppercase tracking-wide text-white-500">False-positive rate</p>
+        <p class="mt-1 font-mono text-2xl text-cyan-300">
+          {{ stats.falsePositiveRate }}% <span class="text-xxxxl text-cyan-400">&#9830;</span>
+        </p>
       </div>
-      <div class="relative overflow-hidden rounded-xl border border-ink-700 bg-ink-900 px-5 py-2.5 text-center">
-        <span class="pointer-events-none absolute inset-0 flex items-center justify-center text-5xl leading-none text-fog-500/40">&#9824;</span>
-        <p class="relative text-xs uppercase tracking-wide text-fog-500">Total observed</p>
-        <p class="relative mt-1 font-mono text-2xl text-fog-100">{{ stats.total }}</p>
+      <div class="rounded-xl border-2 border-dashed border-white-600 bg-ink-900 px-5 py-2.5 text-center">
+        <p class="text-xs uppercase tracking-wide text-white-500">Total observed</p>
+        <p class="mt-1 font-mono text-2xl text-fog-100">
+          {{ stats.total }} <span class="text-xxxl text-fog-400">&#9824;</span>
+        </p>
       </div>
     </div>
 

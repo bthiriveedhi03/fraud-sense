@@ -21,7 +21,7 @@ defineEmits<{ 'open-detail': [id: string, event: MouseEvent] }>()
       <div v-if="feed.filtered.length === 0" class="py-16 text-center text-sm text-fog-500">
         No cards match the current filters.
       </div>
-      <div v-else class="flex flex-wrap gap-4">
+      <div v-else class="grid grid-cols-4 gap-3">
         <TransactionCard
           v-for="tx in feed.filtered"
           :key="tx.id"

@@ -37,7 +37,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="border-b border-ink-700 px-6 py-4">
+  <div class="border-b border-ink-700 bg-ink-800 px-6 py-4">
     <div class="flex items-center justify-between">
       <p class="text-xs uppercase tracking-wide text-fog-500">Login attempts</p>
       <button
