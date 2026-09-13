@@ -41,10 +41,10 @@ onUnmounted(() => {
     <div class="flex items-center justify-between">
       <p class="text-xs uppercase tracking-wide text-fog-500">Login attempts</p>
       <button
-        class="rounded border border-ink-600 px-2.5 py-1 text-xs text-fog-300 hover:border-signal hover:text-signal"
+        class="rounded-md border-2 border-risk-high bg-risk-high px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-[0_0_18px_-2px_rgba(224,82,74,0.8)] transition-transform hover:scale-105 hover:shadow-[0_0_24px_-2px_rgba(224,82,74,1)] active:scale-95"
         @click="runAttackDemo"
       >
-        Simulate attack
+        &#9888; Simulate attack
       </button>
     </div>
 

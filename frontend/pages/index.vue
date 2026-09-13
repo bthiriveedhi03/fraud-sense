@@ -34,22 +34,22 @@ onUnmounted(disconnect)
     <StatsBar />
     <CredStuffingMonitor />
 
-    <div class="grid flex-1 grid-cols-[1fr_360px] overflow-hidden">
-      <div class="flex flex-col overflow-hidden border-r border-ink-700">
-        <div class="h-64 border-b border-ink-700">
-          <ClientOnly>
-            <GeoMap @open-detail="openDetail" />
-          </ClientOnly>
-        </div>
-        <FilterBar />
-        <div class="flex-1 overflow-hidden">
-          <CardTable @open-detail="openDetail" />
-        </div>
+    <FilterBar />
+
+    <div class="grid flex-1 grid-cols-2 overflow-hidden border-t border-ink-700">
+      <div class="overflow-hidden border-r border-ink-700">
+        <CardTable @open-detail="openDetail" />
       </div>
 
       <div class="overflow-hidden">
-        <AuditLog />
+        <ClientOnly>
+          <GeoMap @open-detail="openDetail" />
+        </ClientOnly>
       </div>
+    </div>
+
+    <div class="h-52 border-t border-ink-700">
+      <AuditLog />
     </div>
 
     <TransactionPopover v-if="popover.visible" :x="popover.x" :y="popover.y" @close="closeDetail" />

@@ -26,6 +26,44 @@ function riskColor(tier: string) {
   return { low: '#3FB68B', mid: '#E0A845', high: '#E0524A' }[tier] || '#3FB68B'
 }
 
+// Renders a transaction marker as a little poker chip: a solid color disc
+// with alternating edge spots and a lighter inner ring, like real casino
+// chips. Selected transactions get a bigger chip so they stand out.
+function chipIcon(color: string, selected: boolean) {
+  const size = selected ? 26 : 18
+  const spots = 8
+  const spotEls = Array.from({ length: spots })
+    .map((_, i) => {
+      const angle = (360 / spots) * i
+      return `<span style="
+        position:absolute; top:50%; left:50%; width:22%; height:22%;
+        background:#fff; border-radius:2px; opacity:0.85;
+        transform: rotate(${angle}deg) translate(0, -${size * 0.42}px) translate(-50%, -50%);
+        transform-origin: 0 0;
+      "></span>`
+    })
+    .join('')
+
+  return L.divIcon({
+    className: '',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    html: `
+      <div style="
+        position:relative; width:${size}px; height:${size}px; border-radius:50%;
+        background:${color}; box-shadow:0 0 0 2px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.5);
+      ">
+        ${spotEls}
+        <div style="
+          position:absolute; inset:26%; border-radius:50%;
+          border:1.5px dashed rgba(255,255,255,0.75);
+          background:rgba(255,255,255,0.08);
+        "></div>
+      </div>
+    `,
+  })
+}
+
 function render() {
   if (!map || !L) return
   markerLayer.clearLayers()
@@ -33,14 +71,9 @@ function render() {
   // Only render the most recent 40 to keep the map legible.
   for (const tx of feed.transactions.slice(0, 40)) {
     const color = riskColor(tx.riskTier)
+    const selected = tx.id === feed.selectedTransactionId
 
-    L.circleMarker([tx.lat, tx.lng], {
-      radius: tx.id === feed.selectedTransactionId ? 7 : 5,
-      color,
-      fillColor: color,
-      fillOpacity: 0.8,
-      weight: 1,
-    })
+    L.marker([tx.lat, tx.lng], { icon: chipIcon(color, selected) })
       .addTo(markerLayer)
       .on('click', (e: any) => emit('open-detail', tx.id, e.originalEvent))
 

@@ -8,43 +8,46 @@ function time(ts: number) {
 }
 
 const actionColor: Record<string, string> = {
-  flagged: 'text-risk-high border-l-risk-high',
-  cleared: 'text-risk-low border-l-risk-low',
-  escalated: 'text-risk-mid border-l-risk-mid',
+  flagged: 'text-risk-high border-t-risk-high',
+  cleared: 'text-risk-low border-t-risk-low',
+  escalated: 'text-risk-mid border-t-risk-mid',
 }
 </script>
 
 <template>
   <div class="flex h-full flex-col">
-    <p class="border-b border-ink-700 px-4 py-2.5 text-xs uppercase tracking-wide text-fog-500">
+    <p class="border-b border-ink-700 px-4 py-2 text-xs uppercase tracking-wide text-fog-500">
       Audit log
     </p>
-    <div class="flex-1 overflow-y-auto px-4 py-2">
-      <div v-if="feed.auditLog.length === 0" class="py-6 text-center text-xs text-fog-500">
+    <div class="flex flex-1 items-center gap-3 overflow-x-auto px-4 py-3">
+      <div v-if="feed.auditLog.length === 0" class="w-full py-4 text-center text-xs text-fog-500">
         Analyst actions will appear here.
       </div>
       <div
         v-for="entry in feed.auditLog"
         :key="entry.id"
-        class="flex items-center justify-between border-b border-ink-800 border-l-2 py-2 pl-3 text-xs"
+        class="flex h-full min-w-[220px] shrink-0 flex-col justify-between rounded-lg border-t-2 border-ink-800 bg-ink-900 px-3 py-2 text-xs"
         :class="actionColor[entry.action]"
       >
         <div>
-          <span class="capitalize" :class="actionColor[entry.action]">{{ entry.action }}</span>
-          <span class="text-fog-500"> by {{ entry.analyst }} &middot; {{ time(entry.timestamp) }}</span>
+          <span class="capitalize font-semibold" :class="actionColor[entry.action]">{{ entry.action }}</span>
+          <span class="text-fog-500"> by {{ entry.analyst }}</span>
         </div>
-        <!--
-          Backend should return the Solana devnet tx signature once the audit
-          write confirms on-chain; until then this shows a pending indicator
-          rather than pretending it's verified.
-        -->
-        <span
-          class="font-mono"
-          :class="entry.chainTx ? 'text-signal' : 'text-fog-500'"
-          :title="entry.chainTx ? 'Verified on-chain' : 'Pending on-chain confirmation'"
-        >
-          {{ entry.chainTx ? 'on-chain' : 'pending' }}
-        </span>
+        <div class="mt-1 flex items-center justify-between">
+          <span class="text-fog-500">{{ time(entry.timestamp) }}</span>
+          <!--
+            Backend should return the Solana devnet tx signature once the audit
+            write confirms on-chain; until then this shows a pending indicator
+            rather than pretending it's verified.
+          -->
+          <span
+            class="font-mono"
+            :class="entry.chainTx ? 'text-signal' : 'text-fog-500'"
+            :title="entry.chainTx ? 'Verified on-chain' : 'Pending on-chain confirmation'"
+          >
+            {{ entry.chainTx ? 'on-chain' : 'pending' }}
+          </span>
+        </div>
       </div>
     </div>
   </div>

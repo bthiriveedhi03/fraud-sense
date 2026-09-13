@@ -30,3 +30,12 @@ CREATE TABLE transactions (
   status TEXT,
   description TEXT
 );
+
+CREATE TABLE audit_log (
+  id TEXT PRIMARY KEY,
+  transaction_id TEXT REFERENCES transactions(id),
+  action TEXT NOT NULL,
+  analyst TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  chain_tx TEXT
+);
