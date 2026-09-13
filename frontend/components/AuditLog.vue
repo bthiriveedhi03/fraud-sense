@@ -41,10 +41,14 @@ const actionColor: Record<string, string> = {
             rather than pretending it's verified.
           -->
           <span
-            class="font-mono"
-            :class="entry.chainTx ? 'text-signal' : 'text-fog-500'"
+            class="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 font-mono"
+            :class="entry.chainTx ? 'border-signal/60 text-signal bg-signal/10' : 'border-ink-700 text-fog-500'"
             :title="entry.chainTx ? 'Verified on-chain' : 'Pending on-chain confirmation'"
           >
+            <span
+              class="h-1.5 w-1.5 rounded-full"
+              :class="entry.chainTx ? 'bg-signal' : 'bg-fog-600'"
+            />
             {{ entry.chainTx ? 'on-chain' : 'pending' }}
           </span>
         </div>

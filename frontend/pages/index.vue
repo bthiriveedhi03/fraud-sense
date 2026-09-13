@@ -30,7 +30,15 @@ onUnmounted(disconnect)
 
 <template>
   <PokerChipLoader v-if="loading" />
-  <div v-else class="flex h-screen flex-col bg-ink-950">
+  <div
+    v-else
+    class="flex h-screen flex-col bg-ink-950"
+    style="
+      background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Ctext x='22' y='42' font-size='30' fill='%23ffffff' opacity='0.035'%3E%E2%99%A3%3C/text%3E%3Ctext x='82' y='42' font-size='30' fill='%23ffffff' opacity='0.035'%3E%E2%99%A6%3C/text%3E%3Ctext x='22' y='112' font-size='30' fill='%23ffffff' opacity='0.035'%3E%E2%99%A5%3C/text%3E%3Ctext x='82' y='112' font-size='30' fill='%23ffffff' opacity='0.035'%3E%E2%99%A0%3C/text%3E%3C/svg%3E&quot;);
+      background-repeat: repeat feOffset 2px;
+      background-size: 140px 140px;
+    "
+  >
     <StatsBar />
     <CredStuffingMonitor />
 

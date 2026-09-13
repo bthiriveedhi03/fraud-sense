@@ -110,5 +110,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="mapEl" class="h-full w-full" />
+  <div class="relative h-full w-full border-4 border-amber-400/40 bg-[#0d2b1f] p-1.5 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)]">
+    <div ref="mapEl" class="h-full w-full rounded-sm" />
+  </div>
 </template>
