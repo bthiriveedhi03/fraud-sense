@@ -1,6 +1,7 @@
 import { io, type Socket } from 'socket.io-client'
 import { useMockFeed } from '~/composables/useMockFeed'
 import { useFeedStore } from '~/stores/feed'
+import { useHighRiskAlert } from '~/composables/useHighRiskAlert'
 import type { Transaction } from '~/stores/feed'
 
 let socket: Socket | null = null
@@ -14,6 +15,7 @@ let stopMock: (() => void) | null = null
  */
 export function useSocket() {
   const feed = useFeedStore()
+  const highRiskAlert = useHighRiskAlert()
   const config = useRuntimeConfig()
   const CONNECT_TIMEOUT = 2500
 
@@ -37,6 +39,11 @@ export function useSocket() {
 
     socket.on('newTransaction', (tx: Transaction) => {
       feed.ingest(tx)
+    })
+
+    socket.on('highRiskAlert', (tx: Transaction) => {
+      console.log('[DEBUG] highRiskAlert received', tx)
+      highRiskAlert.value = tx
     })
 
     socket.on('disconnect', () => {

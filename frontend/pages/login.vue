@@ -19,13 +19,49 @@ const step = ref<'persona' | 'presage' | 'done'>('persona')
 const status = ref<'idle' | 'pending' | 'approved' | 'declined'>('idle')
 const router = useRouter()
 
+const PERSONA_TEMPLATE_ID = 'itmpl_A6FL8NsxV7kDtaBfRjWpRUM9iHfTEF'
+const PERSONA_ENVIRONMENT_ID = 'env_A6FL8Ns7nxG8ysvpj6XRyNjkeMup68'
+const config = useRuntimeConfig()
+
+function loadPersonaScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if ((window as any).Persona) return resolve()
+    const script = document.createElement('script')
+    script.src = 'https://cdn.withpersona.com/dist/persona-v5.5.0.js'
+    script.integrity = 'sha384-UK+a2yEU9KOzEmsgI4IlkrXWE4AekM/iAgWF60Zuyule702g7qaQ2nYccO3tnT0A'
+    script.crossOrigin = 'anonymous'
+    script.onload = () => resolve()
+    script.onerror = reject
+    document.head.appendChild(script)
+  })
+}
+
 async function runPersona() {
   status.value = 'pending'
-  // Sandbox stand-in for: const inquiry = await persona.createInquiry(...)
-  await new Promise((r) => setTimeout(r, 1200))
-  status.value = 'approved'
-  step.value = 'presage'
-  status.value = 'idle'
+  await loadPersonaScript()
+  const Persona = (window as any).Persona
+
+  const client = new Persona.Client({
+    templateId: PERSONA_TEMPLATE_ID,
+    environmentId: PERSONA_ENVIRONMENT_ID,
+    onReady: () => client.open(),
+    onComplete: async ({ inquiryId }: { inquiryId: string }) => {
+      try {
+        const result = await $fetch<{ approved: boolean }>(
+          `${config.public.apiBase}/auth/persona/verify/${inquiryId}`
+        )
+        if (result.approved) {
+          step.value = 'presage'
+        } else {
+          alert('Identity verification was not approved. Please try again.')
+        }
+      } catch (err) {
+        console.error('Persona verification failed:', err)
+        alert('Could not verify identity. Please try again.')
+      }
+      status.value = 'idle'
+    },
+  })
 }
 
 async function runPresage() {
@@ -34,6 +70,7 @@ async function runPresage() {
   await new Promise((r) => setTimeout(r, 1200))
   status.value = 'approved'
   step.value = 'done'
+  localStorage.setItem('fs_auth_token', 'demo-session-' + Date.now())
   // Real flow: send both results to the backend, receive a session token,
   // then store it (e.g. a cookie set by the backend) before routing in.
   router.push('/')

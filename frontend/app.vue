@@ -1,3 +1,4 @@
 <template>
+  <HighRiskAlertBanner />
   <NuxtPage />
 </template>
