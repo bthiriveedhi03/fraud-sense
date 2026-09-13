@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     public: {
       socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'http://localhost:3001',
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:3001',
-      cartoApiKey: process.env.NUXT_PUBLIC_CARTO_API_KEY,
+     stadiaApiKey: process.env.NUXT_PUBLIC_STADIA_API_KEY,
     },
   },
   app: {
