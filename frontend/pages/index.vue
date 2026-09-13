@@ -43,9 +43,10 @@ onUnmounted(disconnect)
     style="
       background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='160' viewBox='0 0 40 160'%3E%3Ctext x='8' y='27' font-size='20' fill='%23ffffff' opacity='0.15'%3E%E2%99%A3%3C/text%3E%3Ctext x='11' y='67' font-size='20' fill='%23ffffff' opacity='0.15'%3E%E2%99%A6%3C/text%3E%3Ctext x='14' y='107' font-size='20' fill='%23ffffff' opacity='0.15'%3E%E2%99%A5%3C/text%3E%3Ctext x='17' y='147' font-size='20' fill='%23ffffff' opacity='0.15'%3E%E2%99%A0%3C/text%3E%3C/svg%3E&quot;);
       background-repeat: repeat;
-      background-size: 40px 160px;
-    "
-  >
+      background-size: 40px 160px;">
+    <header class="flex flex-0.5 justify-center border-b border-ink-700 px-6 py-3 padding-top-10">
+      <TitleTiles text="Call The Bluff" />
+    </header>
     <StatsBar />
     <CredStuffingMonitor />
 
