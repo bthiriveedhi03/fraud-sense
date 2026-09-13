@@ -14,13 +14,20 @@ onMounted(async () => {
   await import('leaflet/dist/leaflet.css')
 
   const config = useRuntimeConfig()
-  const cartoKey = config.public.cartoApiKey
+  const stadiaKey = config.public.stadiaApiKey
 
   map = L.map(mapEl.value, { zoomControl: false, attributionControl: false }).setView([32, -97], 4)
+
+  // Stadia's "Alidade Smooth Dark" style - drop-in dark basemap, same as the
+  // old Carto tiles but on a provider with a clearer free-tier/key story.
+  // Swap back to the Carto/OSM line below if you want to compare.
   L.tileLayer(
-    `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png${cartoKey ? `?api_key=${cartoKey}` : ''}`,
+    `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png${stadiaKey ? `?api_key=${stadiaKey}` : ''}`,
     { maxZoom: 12 }
   ).addTo(map)
+
+  // Fallback, no key needed - uncomment to test without Stadia entirely:
+  // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 12 }).addTo(map)
 
   markerLayer = L.layerGroup().addTo(map)
   render()
